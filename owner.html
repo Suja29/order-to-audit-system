@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Owner Executive Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+    <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-md">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Owner Executive Dashboard</h1>
+            <a href="/admin" class="text-blue-600 hover:underline font-semibold">Back to Admin</a>
+        </div>
+
+        <!-- High-Level Financial Metrics -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-indigo-50 border border-indigo-200 p-6 rounded-lg">
+                <h3 class="text-sm font-medium text-indigo-600 uppercase">Total Sales Revenue</h3>
+                <p class="text-3xl font-bold text-indigo-900 mt-2">₹{{ total_sales }}</p>
+            </div>
+        </div>
+
+        <!-- Invoices Summary -->
+        <h2 class="text-xl font-semibold mb-4 text-gray-700">All Generated Invoices</h2>
+        <div class="overflow-x-auto mb-6">
+            <table class="min-w-full bg-white border border-gray-200">
+                <thead>
+                    <tr class="bg-gray-100 border-b">
+                        <th class="py-2 px-4 border-right text-left">Invoice No</th>
+                        <th class="py-2 px-4 border-right text-left">Order ID</th>
+                        <th class="py-2 px-4 border-right text-left">Taxable Value (₹)</th>
+                        <th class="py-2 px-4 border-right text-left">Total Amount (₹)</th>
+                        <th class="py-2 px-4 border-right text-left">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for inv in invoices %}
+                    <tr class="border-b">
+                        <td class="py-2 px-4 font-semibold">{{ inv.invoice_no }}</td>
+                        <td class="py-2 px-4">#{{ inv.order_id }}</td>
+                        <td class="py-2 px-4">₹{{ inv.taxable_value }}</td>
+                        <td class="py-2 px-4 font-semibold text-green-600">₹{{ inv.total_amount }}</td>
+                        <td class="py-2 px-4 text-gray-500">{{ inv.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% if not invoices %}
+                    <tr>
+                        <td colspan="5" class="py-4 text-center text-gray-500">No invoices generated yet.</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flex gap-4">
+            <a href="/auditor" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">View Auditor Ledger</a>
+        </div>
+    </div>
+</body>
+</html>

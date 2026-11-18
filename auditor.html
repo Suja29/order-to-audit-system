@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Auditor Compliance & Ledger Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+    <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-md">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Auditor Portal - Stock Ledger & GST Invoices</h1>
+            <a href="/admin" class="text-blue-600 hover:underline font-semibold">Back to Admin</a>
+        </div>
+
+        <!-- Stock Ledger History -->
+        <h2 class="text-xl font-semibold mb-4 text-gray-700">Stock Ledger Trail</h2>
+        <div class="overflow-x-auto mb-8">
+            <table class="min-w-full bg-white border border-gray-200">
+                <thead>
+                    <tr class="bg-gray-100 border-b">
+                        <th class="py-2 px-4 border-right text-left">Ledger ID</th>
+                        <th class="py-2 px-4 border-right text-left">Item ID</th>
+                        <th class="py-2 px-4 border-right text-left">Qty Change</th>
+                        <th class="py-2 px-4 border-right text-left">Txn Type</th>
+                        <th class="py-2 px-4 border-right text-left">Ref Doc</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in ledger %}
+                    <tr class="border-b">
+                        <td class="py-2 px-4">#{{ entry.id }}</td>
+                        <td class="py-2 px-4">{{ entry.item_id }}</td>
+                        <td class="py-2 px-4 font-semibold {{ 'text-green-600' if entry.qty_change > 0 else 'text-red-600' }}">{{ entry.qty_change }}</td>
+                        <td class="py-2 px-4">{{ entry.txn_type }}</td>
+                        <td class="py-2 px-4">{{ entry.ref_doc }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Generated Invoices -->
+        <h2 class="text-xl font-semibold mb-4 text-gray-700">GST Invoices</h2>
+        <div class="overflow-x-auto mb-6">
+            <table class="min-w-full bg-white border border-gray-200">
+                <thead>
+                    <tr class="bg-gray-100 border-b">
+                        <th class="py-2 px-4 border-right text-left">Invoice No</th>
+                        <th class="py-2 px-4 border-right text-left">Taxable (₹)</th>
+                        <th class="py-2 px-4 border-right text-left">CGST (₹)</th>
+                        <th class="py-2 px-4 border-right text-left">SGST (₹)</th>
+                        <th class="py-2 px-4 border-right text-left">Total Amount (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for inv in invoices %}
+                    <tr class="border-b">
+                        <td class="py-2 px-4 font-semibold">{{ inv.invoice_no }}</td>
+                        <td class="py-2 px-4">₹{{ inv.taxable_value }}</td>
+                        <td class="py-2 px-4">₹{{ inv.cgst }}</td>
+                        <td class="py-2 px-4">₹{{ inv.sgst }}</td>
+                        <td class="py-2 px-4 font-semibold text-green-600">₹{{ inv.total_amount }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flex gap-4">
+            <a href="/owner" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Go to Owner Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

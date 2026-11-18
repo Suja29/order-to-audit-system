@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Auditor Reports</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 p-6">
+    <div class="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Auditor & Accountant Reports</h1>
+            <a href="/admin" class="text-blue-600 hover:underline">Back to Admin</a>
+        </div>
+
+        <h2 class="text-lg font-semibold mb-3">GST Invoices Register</h2>
+        <table class="w-full border-collapse border border-gray-300 text-left text-sm mb-8">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="border p-2">Invoice No</th>
+                    <th class="border p-2">Taxable Value</th>
+                    <th class="border p-2">CGST</th>
+                    <th class="border p-2">SGST</th>
+                    <th class="border p-2">IGST</th>
+                    <th class="border p-2">Total Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inv in invoices %}
+                <tr>
+                    <td class="border p-2 font-bold">{{ inv.invoice_no }}</td>
+                    <td class="border p-2">₹{{ inv.taxable_value }}</td>
+                    <td class="border p-2">₹{{ inv.cgst }}</td>
+                    <td class="border p-2">₹{{ inv.sgst }}</td>
+                    <td class="border p-2">₹{{ inv.igst }}</td>
+                    <td class="border p-2 font-bold text-green-600">₹{{ inv.total_amount }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-semibold mb-3">Stock Ledger Movements</h2>
+        <table class="w-full border-collapse border border-gray-300 text-left text-sm">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="border p-2">Ledger ID</th>
+                    <th class="border p-2">Item ID</th>
+                    <th class="border p-2">Qty Change</th>
+                    <th class="border p-2">Txn Type</th>
+                    <th class="border p-2">Ref Doc</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for l in ledgers %}
+                <tr>
+                    <td class="border p-2">#{{ l.id }}</td>
+                    <td class="border p-2">{{ l.item_id }}</td>
+                    <td class="border p-2 font-bold">{{ l.qty_change }}</td>
+                    <td class="border p-2">{{ l.txn_type }}</td>
+                    <td class="border p-2">{{ l.ref_doc }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

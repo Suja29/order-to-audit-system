@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Factory Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+    <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-md">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Factory Admin & Billing Portal</h1>
+            <a href="/" class="text-red-600 hover:underline font-semibold">Logout</a>
+        </div>
+
+        <!-- Incoming Sales Orders Section -->
+        <h2 class="text-xl font-semibold mb-4 text-gray-700">Incoming Sales Orders</h2>
+        <div class="overflow-x-auto mb-8">
+            <table class="min-w-full bg-white border border-gray-200">
+                <thead>
+                    <tr class="bg-gray-100 border-b">
+                        <th class="py-2 px-4 border-right text-left">Order ID</th>
+                        <th class="py-2 px-4 border-right text-left">Salesman</th>
+                        <th class="py-2 px-4 border-right text-left">Customer ID</th>
+                        <th class="py-2 px-4 border-right text-left">Qty</th>
+                        <th class="py-2 px-4 border-right text-left">Status</th>
+                        <th class="py-2 px-4 border-left text-left">Action / Stock Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr class="border-b">
+                        <td class="py-2 px-4">#{{ order.id }}</td>
+                        <td class="py-2 px-4">{{ order.salesman_name }}</td>
+                        <td class="py-2 px-4">{{ order.customer_id }}</td>
+                        <td class="py-2 px-4 font-bold">{{ order.qty }}</td>
+                        <td class="py-2 px-4 font-semibold text-blue-600">{{ order.status }}</td>
+                        <td class="py-2 px-4">
+                            {% if order.status == "SUBMITTED" %}
+                                {% set available_stock = order_stock_map.get(order.id, 0) %}
+                                {% if order.qty <= available_stock %}
+                                    <a href="/admin/approve/{{ order.id }}" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 text-sm font-semibold">Approve & Invoice</a>
+                                {% else %}
+                                    <span class="text-red-600 font-bold text-xs bg-red-50 px-2 py-1 rounded border border-red-200">
+                                        ⚠️ Stock Insufficient (Avail: {{ available_stock }})
+                                    </span>
+                                {% endif %}
+                            {% else %}
+                                <span class="text-gray-400">Processed</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% if not orders %}
+                    <tr>
+                        <td colspan="6" class="py-4 text-center text-gray-500">No pending orders found.</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="flex gap-4">
+            <a href="/production" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">Go to Production Floor</a>
+            <a href="/auditor" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">View Auditor Reports</a>
+            <a href="/owner" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Owner Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>
